@@ -24,7 +24,7 @@ async def ask_gpt(user_message: str,
 
         if history:
             logger.info('История не пуста, добавляем её к будущему запросу %s', history)
-            messages.append(history)
+            messages.extend(history)
 
         messages.append({'role': 'user', 'content': user_message})
         response = await client.chat.completions.create(

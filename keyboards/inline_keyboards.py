@@ -20,3 +20,8 @@ def main_menu():
         ]
     )
     return keyboard
+
+def rand_fact():
+    return InlineKeyboardMarkup(
+        inline_keyboard= [[InlineKeyboardButton(text='Ещё один факт', callback_data='btn:random',style='danger')]]
+    )
