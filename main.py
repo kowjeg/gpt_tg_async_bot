@@ -5,7 +5,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
-from config import BOT_TOKEN
+from config import BOT_TOKEN, GPT_TOKEN
 
 
 dp = Dispatcher()
