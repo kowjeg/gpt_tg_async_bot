@@ -5,23 +5,35 @@ def main_menu():
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text='🎲Случайный факт', callback_data='btn:random', style='danger'),
+                InlineKeyboardButton(text='🎲Случайный факт', callback_data='menu:random', style='primary'),
 
             ],
             [
-                InlineKeyboardButton(text='🤖Вопрос к ChatGPT', callback_data='btn:gpt', style='primary'),
+                InlineKeyboardButton(text='🤖Вопрос к ChatGPT', callback_data='menu:gpt', style='primary'),
             ],
             [
-                InlineKeyboardButton(text='🧑‍🎤Диалог со знаменитостью', callback_data='btn:superstar'),
+                InlineKeyboardButton(text='🧑‍🎤Диалог со знаменитостью', callback_data='menu:superstar', style='primary'),
             ],
             [
-                InlineKeyboardButton(text='🎯Quiz', callback_data='btn:quiz', style='success')
+                InlineKeyboardButton(text='🎯Quiz', callback_data='menu:quiz', style='primary')
             ]
         ]
     )
     return keyboard
 
-def rand_fact():
+
+def rand_fact_keyboard():
     return InlineKeyboardMarkup(
-        inline_keyboard= [[InlineKeyboardButton(text='Ещё один факт', callback_data='btn:random',style='danger')]]
+        inline_keyboard=[
+            [InlineKeyboardButton(text='Ещё один факт', callback_data='random:again', style='success')],
+            [InlineKeyboardButton(text='Закончить', callback_data='random:stop', style='danger')]
+        ]
+    )
+
+
+def gpt_chat_keyboard():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text='Закончить диалог', callback_data='gpt:stop', style='danger')]
+        ]
     )
