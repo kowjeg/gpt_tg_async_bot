@@ -1,7 +1,8 @@
 import logging
 from aiogram import F, Router
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
-from handlers import random_fact
+from handlers import random_fact, gpt_chat, talk
 
 
 logger = logging.getLogger(__name__)
@@ -16,9 +17,15 @@ async def handle_random_fact(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == 'menu:gpt')
-async def handle_random_fact(callback: CallbackQuery):
+async def handle_gpt_mode(callback: CallbackQuery, state: FSMContext):
+    await gpt_chat.cmd_gpt(callback.message, state)
     await callback.answer()
     await callback.message.delete()
-    await callback.message.answer('Напиши /gpt чтобы войти в режим ChatGPT')
 
 
+
+@router.callback_query(F.data == 'menu:talk')
+async def handle_talk_menu(callback: CallbackQuery, state: FSMContext):
+    await talk.cmd_talk(callback.message, state)
+    await callback.answer()
+    await callback.message.delete()

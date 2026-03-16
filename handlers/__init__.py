@@ -8,4 +8,4 @@ from .talk import router as talk_router
 
 
 router = Router()
-router.include_routers(commands_router, callbacks_router, rand_router, gpt_router)
+router.include_routers(commands_router, callbacks_router, rand_router, gpt_router, talk_router)

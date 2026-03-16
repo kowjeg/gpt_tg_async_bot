@@ -6,3 +6,6 @@ class GPTStates(StatesGroup):
     talk_superstar = State()
     quiz = State()
 
+class TalkingStates(StatesGroup):
+    choosing_person = State()
+    talking = State()
