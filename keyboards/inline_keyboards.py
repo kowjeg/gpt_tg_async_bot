@@ -40,12 +40,20 @@ def gpt_chat_keyboard():
     )
 
 
-def talk_keyboard():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
+def person_keyboard():
+    buttons =[
             [
                 InlineKeyboardButton(text=person["name"], callback_data=f'talk:{person["id"]}')
             ]
-            for person in CELEBRITIES
+            for person in CELEBRITIES.values()
+        ]
+    buttons.append([InlineKeyboardButton(text='Отмена', callback_data='talk:cancel', style='danger')])
+
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+def talking_keyboard():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text='Закончить диалог', callback_data='talk:stop', style='danger')]
         ]
     )

@@ -58,8 +58,8 @@ async def query_random(callback : CallbackQuery):
 @router.callback_query(F.data == 'random:stop')
 async def query_random_exit(callback : CallbackQuery):
     await callback.answer('Выхожу из режима RandomFact')
-    await callback.message.delete()
     await callback.message.answer('Главное меню:\n\n', reply_markup=main_menu())
+    await callback.message.delete()
 
 
 

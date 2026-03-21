@@ -13,8 +13,11 @@ from keyboards.inline_keyboards import gpt_chat_keyboard, main_menu
 logger = logging.getLogger(__name__)
 router = Router()
 
+
 GPT_SYSTEM_PROMPT = 'Ты ИИ ассистент. Чат с пользователем. Ответы краткие. Ответ на том языке, на котором сообщение от пользователя.'
 STATE_MESSAGE = '<b> Режим ChatGPT</b>\n\n Режим быстрой консультации по любым вопросам. Задай вопрос - я отвечу кратко и по делу. Для выхода из режима и возврата в меню - Кнопка <b>Завершить диалог</b>'
+MAX_HISTORY_LENGTH = 20
+
 
 @router.message(Command('gpt'))
 async def cmd_gpt(message: Message, state: FSMContext):
@@ -49,19 +52,20 @@ async def gpt_message(message: Message, state: FSMContext):
     user_message = message.text
     history = data.get('history', [])
 
-    history.append({'role': 'user', 'content': user_message})
+
 
     try:
-        response = await ask_gpt(user_message=user_message, system_prompt=GPT_SYSTEM_PROMPT, history=history[:-1])
+        response = await ask_gpt(user_message=user_message, system_prompt=GPT_SYSTEM_PROMPT, history=history)
     except Exception as e:
         logger.error('Что-то не так с запросом к GPT, %s', e)
         await message.answer('Ошибка при взаимодействием с сервером GPT, попробуйте позже',
                              reply_markup=gpt_chat_keyboard())
         return
+    history.append({'role': 'user', 'content': user_message})
     history.append({'role': 'assistant', 'content': response})
-    if len(history) > 20:
-        history = history[-20:]
-        await state.update_data(history=history)
+    if len(history) > MAX_HISTORY_LENGTH:
+        history = history[-MAX_HISTORY_LENGTH:]
+    await state.update_data(history=history)
 
     await message.answer(response, reply_markup=gpt_chat_keyboard())
 
@@ -70,5 +74,5 @@ async def gpt_message(message: Message, state: FSMContext):
 async def on_gpt_stop(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.answer('Выхожу из режима ChatGPT')
-    await callback.message.delete()
     await callback.message.answer('Главное меню:\n\n', reply_markup=main_menu())
+    await callback.message.delete()

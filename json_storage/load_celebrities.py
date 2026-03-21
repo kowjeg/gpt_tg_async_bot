@@ -1,4 +1,5 @@
 import json
+import os
 
-with open("json_storage/celebrities.json", "r", encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(__file__), "celebrities.json"), "r", encoding='utf-8') as f:
     CELEBRITIES = json.load(f)
