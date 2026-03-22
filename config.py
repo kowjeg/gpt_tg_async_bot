@@ -3,3 +3,4 @@ import os
 
 dotenv.load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+GPT_TOKEN = os.getenv('GPT_TOKEN')
