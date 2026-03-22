@@ -1,17 +1,13 @@
 import logging
-import json
 from aiogram import F, Router
-import json_storage
 from aiogram.enums import ChatAction
-from aiogram.types import CallbackQuery, FSInputFile, Message
-from aiogram.filters import Command
+from aiogram.types import CallbackQuery, Message, FSInputFile
 from aiogram.fsm.context import FSMContext
-
-from states.gpt_states import GPTStates, TalkingStates
+from states.gpt_states import TalkingStates
 from services.openai_service import ask_gpt
-from keyboards.inline_keyboards import gpt_chat_keyboard, main_menu, person_keyboard, talking_keyboard
-
-from json_storage.load_celebrities import CELEBRITIES
+from keyboards.inline_keyboards import person_keyboard, talking_keyboard
+from handlers.commands_handler import send_main_menu
+from json_storage.load_files import CELEBRITIES
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +16,15 @@ MAX_HISTORY_LENGTH = 20
 
 async def cmd_talk(message: Message, state : FSMContext):
     await state.set_state(TalkingStates.choosing_person)
-    await message.answer('Выбери персонажа для общения сегодня:\n\n', reply_markup=person_keyboard())
+
+
+
+    try:
+        file = FSInputFile('images/talk.png')
+    except FileNotFoundError as e:
+        logger.error('Файла картинки нет на диске!, %s', e)
+    await message.answer_photo(photo=file, caption='Выбери персонажа для общения сегодня:\n\n', reply_markup=person_keyboard())
+
 
 
 
@@ -30,7 +34,7 @@ async def on_talk_stop(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.answer('Выхожу из режима диалога')
 
-    await callback.message.answer('Главное меню:\n\n', reply_markup=main_menu())
+    await send_main_menu(callback.message)
     await callback.message.delete()
 
 

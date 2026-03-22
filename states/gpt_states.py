@@ -8,3 +8,9 @@ class GPTStates(StatesGroup):
 class TalkingStates(StatesGroup):
     choosing_person = State()
     talking = State()
+
+
+class QuizStates(StatesGroup):
+    choosing_topic = State()
+    waiting_answer = State()
+    show_result = State()

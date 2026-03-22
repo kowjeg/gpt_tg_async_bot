@@ -1,5 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from json_storage.load_celebrities import CELEBRITIES
+from json_storage.load_files import CELEBRITIES, TOPICS
 
 
 def main_menu():
@@ -57,3 +57,33 @@ def talking_keyboard():
             [InlineKeyboardButton(text='Закончить диалог', callback_data='talk:stop', style='danger')]
         ]
     )
+
+
+def quiz_topic_keyboard():
+
+    buttons = [[
+            InlineKeyboardButton(text=text, callback_data=f'quiz:topic:{key}', style='primary')
+        ]
+        for key, text in TOPICS.items()
+        ]
+
+    buttons.append([InlineKeyboardButton(text='Отмена', callback_data='quiz:cancel', style='danger')])
+
+
+    return InlineKeyboardMarkup(
+        inline_keyboard=buttons
+    )
+
+
+
+def quiz_stop():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text='Завершить игру', callback_data='quiz:stop', style='danger')]
+        ]
+    )
+def quiz_next_question():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='➡️ Следующий вопрос', callback_data='quiz:next')],
+        [InlineKeyboardButton(text='🏁 Завершить', callback_data='quiz:end')],
+    ])

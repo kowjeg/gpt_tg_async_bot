@@ -6,7 +6,8 @@ from aiogram.types import CallbackQuery, FSInputFile, Message
 from aiogram.filters import Command
 
 from services.openai_service import ask_gpt
-from keyboards.inline_keyboards import rand_fact_keyboard, main_menu
+from keyboards.inline_keyboards import rand_fact_keyboard
+from handlers.commands_handler import send_main_menu
 
 logger = logging.getLogger(__name__)
 router = Router()
@@ -58,7 +59,7 @@ async def query_random(callback : CallbackQuery):
 @router.callback_query(F.data == 'random:stop')
 async def query_random_exit(callback : CallbackQuery):
     await callback.answer('Выхожу из режима RandomFact')
-    await callback.message.answer('Главное меню:\n\n', reply_markup=main_menu())
+    await send_main_menu(callback.message)
     await callback.message.delete()
 
 

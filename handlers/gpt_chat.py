@@ -7,7 +7,8 @@ from aiogram.fsm.context import FSMContext
 
 from states.gpt_states import GPTStates
 from services.openai_service import ask_gpt
-from keyboards.inline_keyboards import gpt_chat_keyboard, main_menu
+from keyboards.inline_keyboards import gpt_chat_keyboard
+from handlers.commands_handler import send_main_menu
 
 
 logger = logging.getLogger(__name__)
@@ -74,5 +75,5 @@ async def gpt_message(message: Message, state: FSMContext):
 async def on_gpt_stop(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.answer('Выхожу из режима ChatGPT')
-    await callback.message.answer('Главное меню:\n\n', reply_markup=main_menu())
+    await send_main_menu(callback.message)
     await callback.message.delete()
